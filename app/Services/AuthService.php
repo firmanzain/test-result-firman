@@ -5,6 +5,9 @@ namespace App\Services;
 use App\DTOs\AuthCredentialDto;
 use App\DTOs\AuthDto;
 use App\DTOs\MachineLogDto;
+use Illuminate\Support\Facades\Hash;
+use App\Enums\SystemAbility;
+use App\Models\User;
 
 class AuthService
 {
@@ -32,5 +35,28 @@ class AuthService
         dispatch(fn() => MachineLogService::addLog(MachineLogDto::fromAuth($dto, $auth)))->name('log_machine_auth_' . $user->employee_number . '_' . now()->format('YmdHis'));
 
         return $auth;
+    }
+
+    public static function authenticateUsePassword(AuthCredentialDto $dto): AuthDto
+    {
+        $user = $dto->user;
+        $password = $dto->password;
+
+        if (!$password || !Hash::check($password, $user->password)) {
+            return AuthDto::failure('Employee number atau password salah');
+        }
+
+        return AuthDto::success(
+            $user->createToken(
+                'auth_token',
+                [SystemAbility::BACKOFFICE->value]
+            )->plainTextToken
+        );
+    }
+
+    public static function logout(User $user): void
+    {
+        $token = $user->currentAccessToken();
+        $token?->delete();
     }
 }
