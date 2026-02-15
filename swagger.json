@@ -1,0 +1,301 @@
+{
+    "openapi": "3.0.3",
+    "info": {
+        "title": "Basic Coding Test",
+        "description": "Basic Coding Test API Documentation",
+        "version": "1.0.0"
+    },
+    "servers": [
+        {
+            "url": "http://127.0.0.1:8000/api",
+            "description": "Localhost"
+        }
+    ],
+    "paths": {
+        "/backoffice/v1/auth/login": {
+            "post": {
+                "description": "API for authentication login",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/loginRequest"
+                            },
+                            "examples": {
+                                "request": {
+                                    "$ref": "#/components/examples/loginRequest"
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Success response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/loginResponse"
+                                },
+                                "examples": {
+                                    "response": {
+                                        "$ref": "#/components/examples/loginResponse200"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/defaultErrorResponse"
+                                },
+                                "examples": {
+                                    "response": {
+                                        "$ref": "#/components/examples/loginResponse400"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Bad request response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/defaultErrorResponse"
+                                },
+                                "examples": {
+                                    "response": {
+                                        "$ref": "#/components/examples/loginResponse401"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/backoffice/v1/auth/logout": {
+            "post": {
+                "description": "API for logout",
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/logoutRequest"
+                            },
+                            "examples": {
+                                "request": {
+                                    "$ref": "#/components/examples/logoutRequest"
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Success response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/logoutResponse"
+                                },
+                                "examples": {
+                                    "response": {
+                                        "$ref": "#/components/examples/logoutResponse200"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Bad request response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/defaultErrorResponse"
+                                },
+                                "examples": {
+                                    "response": {
+                                        "$ref": "#/components/examples/defaultResponse401"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "components": {
+        "securitySchemes": {
+            "bearerAuth": {
+                "type": "http",
+                "scheme": "bearer",
+                "bearerFormat": "Sanctum"
+            }
+        },
+        "parameters": {
+        },
+        "schemas": {
+            "defaultErrorResponse": {
+                "type": "object",
+                "properties": {
+                    "success": {
+                        "type": "boolean"
+                    },
+                    "message": {
+                        "type": "string"
+                    },
+                    "errors": {
+                        "type": "object"
+                    }
+                },
+                "required": ["success", "message", "errors"]
+            },
+            "loginRequest": {
+                "type": "object",
+                "properties": {
+                    "employee_number": {
+                        "type": "string",
+                        "minLength": 6,
+                        "maxLength": 6
+                    },
+                    "password": {
+                        "type": "string"
+                    }
+                },
+                "required": ["employee_number", "password"]
+            },
+            "loginResponse": {
+                "type": "object",
+                "properties": {
+                    "success": {
+                        "type": "boolean"
+                    },
+                    "message": {
+                        "type": "string"
+                    },
+                    "errors": {
+                        "type": "object"
+                    },
+                    "data": {
+                        "type": "object",
+                        "properties": {
+                            "token": {
+                                "type": "string"
+                            },
+                            "user": {
+                                "type": "object",
+                                "properties": {
+                                    "id": {
+                                        "type": "integer"
+                                    },
+                                    "employee_number": {
+                                        "type": "string"
+                                    },
+                                    "name": {
+                                        "type": "string"
+                                    },
+                                    "email": {
+                                        "type": "string"
+                                    }
+                                },
+                                "required": ["id", "employee_number", "name"]
+                            }
+                        },
+                        "required": ["token", "user"]
+                    }
+                },
+                "required": ["success", "message", "errors"]
+            },
+            "logoutRequest": {
+                "type": "object"
+            },
+            "logoutResponse": {
+                "type": "object",
+                "properties": {
+                    "success": {
+                        "type": "boolean"
+                    },
+                    "message": {
+                        "type": "string"
+                    },
+                    "data": {
+                        "type": "object"
+                    }
+                },
+                "required": ["success", "message", "data"]
+            }
+        },
+        "examples": {
+            "defaultResponse401": {
+                "value": {
+                    "success": false,
+                    "message": "Unauthenticated",
+                    "errors": {
+                        "auth": "error.unauthenticated"
+                    }
+                }
+            },
+            "loginRequest": {
+                "value": {
+                    "employee_number": "000001",
+                    "password": "password"
+                }
+            },
+            "loginResponse200": {
+                "value": {
+                    "success": true,
+                    "message": "Successfull",
+                    "data": {
+                        "token": "5|NN1DfWX9K0eEnfGPzxRkGacmXS1GKnIu08rUBLJZ69407e59",
+                        "user": {
+                            "id": 1,
+                            "employee_number": "000001",
+                            "name": "Dummy Employee",
+                            "email": null
+                        }
+                    }
+                }
+            },
+            "loginResponse400": {
+                "value": {
+                    "success": false,
+                    "message": "The employee number field is required. (and 1 more error)",
+                    "errors": {
+                        "employee_number": "error.required",
+                        "password": "error.required"
+                    }
+                }
+            },
+            "loginResponse401": {
+                "value": {
+                    "success": false,
+                    "message": "Invalid employee number or password",
+                    "errors": {
+                        "employee": "error.invalid_credential"
+                    }
+                }
+            },
+            "logoutRequest": {
+                "value": {}
+            },
+            "logoutResponse200": {
+                "value": {
+                    "success": true,
+                    "message": "Successfull",
+                    "data": []
+                }
+            }
+        }
+    }
+}
