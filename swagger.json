@@ -11,10 +11,21 @@
             "description": "Localhost"
         }
     ],
+    "tags": [
+        {
+            "name": "Auth",
+            "description": "API Authentication"
+        },
+        {
+            "name": "User",
+            "description": "API Manage Users"
+        }
+    ],
     "paths": {
         "/backoffice/v1/auth/login": {
             "post": {
-                "description": "API for authentication login",
+                "tags": ["Auth"],
+                "description": "Login with authenticated user",
                 "requestBody": {
                     "content": {
                         "application/json": {
@@ -61,7 +72,7 @@
                         }
                     },
                     "401": {
-                        "description": "Bad request response",
+                        "description": "Unauthorized response",
                         "content": {
                             "application/json": {
                                 "schema": {
@@ -80,11 +91,10 @@
         },
         "/backoffice/v1/auth/logout": {
             "post": {
-                "description": "API for logout",
+                "tags": ["Auth"],
+                "description": "Logout authenticated user",
                 "security": [
-                    {
-                        "bearerAuth": []
-                    }
+                    { "bearerAuth": [] }
                 ],
                 "requestBody": {
                     "content": {
@@ -117,7 +127,7 @@
                         }
                     },
                     "401": {
-                        "description": "Bad request response",
+                        "description": "Unauthorized response",
                         "content": {
                             "application/json": {
                                 "schema": {
@@ -126,6 +136,410 @@
                                 "examples": {
                                     "response": {
                                         "$ref": "#/components/examples/defaultResponse401"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/backoffice/v1/user": {
+            "get": {
+                "tags": ["User"],
+                "description": "Get list user with pagination",
+                "security": [
+                    { "bearerAuth": [] }
+                ],
+                "parameters": [
+                    { "$ref": "#/components/parameters/pageParams" },
+                    { "$ref": "#/components/parameters/limitParams" },
+                    { "$ref": "#/components/parameters/searchParams" }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/userListResponse"
+                                },
+                                "examples": {
+                                    "response": {
+                                        "$ref": "#/components/examples/userListResponse200"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/defaultErrorResponse"
+                                },
+                                "examples": {
+                                    "response": {
+                                        "$ref": "#/components/examples/userListResponse400"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/defaultErrorResponse"
+                                },
+                                "examples": {
+                                    "response": {
+                                        "$ref": "#/components/examples/defaultResponse401"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "tags": ["User"],
+                "description": "Create user employee",
+                "security": [
+                    { "bearerAuth": [] }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/userCreateRequest"
+                            },
+                            "examples": {
+                                "request": {
+                                    "$ref": "#/components/examples/userCreateRequest"
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Success response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/userCreateResponse"
+                                },
+                                "examples": {
+                                    "response": {
+                                        "$ref": "#/components/examples/userCreateResponse200"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/defaultErrorResponse"
+                                },
+                                "examples": {
+                                    "response": {
+                                        "$ref": "#/components/examples/userCreateResponse400"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/defaultErrorResponse"
+                                },
+                                "examples": {
+                                    "response": {
+                                        "$ref": "#/components/examples/defaultResponse401"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/backoffice/v1/user/{id}": {
+            "get": {
+                "tags": ["User"],
+                "description": "Detail user employee",
+                "security": [
+                    { "bearerAuth": [] }
+                ],
+                "parameters": [
+                    { "$ref": "#/components/parameters/idParams" }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/userDetailResponse"
+                                },
+                                "examples": {
+                                    "response": {
+                                        "$ref": "#/components/examples/userDetailResponse200"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/defaultErrorResponse"
+                                },
+                                "examples": {
+                                    "response": {
+                                        "$ref": "#/components/examples/defaultResponse401"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Not found response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/defaultErrorResponse"
+                                },
+                                "examples": {
+                                    "response": {
+                                        "$ref": "#/components/examples/userDetailResponse404"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "put": {
+                "tags": ["User"],
+                "description": "Update user employee",
+                "security": [
+                    { "bearerAuth": [] }
+                ],
+                "parameters": [
+                    { "$ref": "#/components/parameters/idParams" }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/userUpdateRequest"
+                            },
+                            "examples": {
+                                "request": {
+                                    "$ref": "#/components/examples/userUpdateRequest"
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Success response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/userUpdateResponse"
+                                },
+                                "examples": {
+                                    "response": {
+                                        "$ref": "#/components/examples/userUpdateResponse200"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/defaultErrorResponse"
+                                },
+                                "examples": {
+                                    "response": {
+                                        "$ref": "#/components/examples/userUpdateResponse400"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/defaultErrorResponse"
+                                },
+                                "examples": {
+                                    "response": {
+                                        "$ref": "#/components/examples/defaultResponse401"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Not found response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/defaultErrorResponse"
+                                },
+                                "examples": {
+                                    "response": {
+                                        "$ref": "#/components/examples/userUpdateResponse404"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "tags": ["User"],
+                "description": "Delete user employee",
+                "security": [
+                    { "bearerAuth": [] }
+                ],
+                "parameters": [
+                    { "$ref": "#/components/parameters/idParams" }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/userDeleteResponse"
+                                },
+                                "examples": {
+                                    "response": {
+                                        "$ref": "#/components/examples/userDeleteResponse200"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/defaultErrorResponse"
+                                },
+                                "examples": {
+                                    "response": {
+                                        "$ref": "#/components/examples/defaultResponse401"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Not found response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/defaultErrorResponse"
+                                },
+                                "examples": {
+                                    "response": {
+                                        "$ref": "#/components/examples/userDeleteResponse404"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/backoffice/v1/user/{id}/restore": {
+            "post": {
+                "tags": ["User"],
+                "description": "Restore deleted user employee",
+                "security": [
+                    { "bearerAuth": [] }
+                ],
+                "parameters": [
+                    { "$ref": "#/components/parameters/idParams" }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/userRestoreRequest"
+                            },
+                            "examples": {
+                                "request": {
+                                    "$ref": "#/components/examples/userRestoreRequest"
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Success response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/userRestoreResponse"
+                                },
+                                "examples": {
+                                    "response": {
+                                        "$ref": "#/components/examples/userRestoreResponse200"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/defaultErrorResponse"
+                                },
+                                "examples": {
+                                    "response": {
+                                        "$ref": "#/components/examples/defaultResponse401"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Not found response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/defaultErrorResponse"
+                                },
+                                "examples": {
+                                    "response": {
+                                        "$ref": "#/components/examples/userRestoreResponse404"
                                     }
                                 }
                             }
@@ -144,6 +558,43 @@
             }
         },
         "parameters": {
+            "pageParams": {
+                "name": "pageParams",
+                "in": "query",
+                "description": "Page parameters",
+                "schema": {
+                    "type": "number",
+                    "example": 1
+                }
+            },
+            "limitParams": {
+                "name": "limitParams",
+                "in": "query",
+                "description": "Limit parameters",
+                "schema": {
+                    "type": "number",
+                    "example": 10
+                }
+            },
+            "searchParams": {
+                "name": "searchParams",
+                "in": "query",
+                "description": "Search parameters",
+                "schema": {
+                    "type": "string",
+                    "example": "Data"
+                }
+            },
+            "idParams": {
+                "name": "idParams",
+                "in": "path",
+                "description": "Id parameters",
+                "schema": {
+                    "type": "string",
+                    "example": "1"
+                },
+                "required": true
+            }
         },
         "schemas": {
             "defaultErrorResponse": {
@@ -184,9 +635,6 @@
                     "message": {
                         "type": "string"
                     },
-                    "errors": {
-                        "type": "object"
-                    },
                     "data": {
                         "type": "object",
                         "properties": {
@@ -215,7 +663,7 @@
                         "required": ["token", "user"]
                     }
                 },
-                "required": ["success", "message", "errors"]
+                "required": ["success", "message"]
             },
             "logoutRequest": {
                 "type": "object"
@@ -231,6 +679,287 @@
                     },
                     "data": {
                         "type": "object"
+                    }
+                },
+                "required": ["success", "message"]
+            },
+            "userListResponse": {
+                "type": "object",
+                "properties": {
+                    "success": {
+                        "type": "boolean"
+                    },
+                    "message": {
+                        "type": "string"
+                    },
+                    "data": {
+                        "type": "array",
+                        "items": {
+                            "type": "object",
+                            "properties": {
+                                "id": {
+                                    "type": "integer"
+                                },
+                                "employee_number": {
+                                    "type": "string"
+                                },
+                                "name": {
+                                    "type": "string"
+                                },
+                                "email": {
+                                    "type": "string"
+                                },
+                                "email_verified_at": {
+                                    "type": "boolean"
+                                },
+                                "created_at": {
+                                    "type": "string",
+                                    "format": "date-time"
+                                },
+                                "updated_at": {
+                                    "type": "string",
+                                    "format": "date-time"
+                                },
+                                "deleted_at": {
+                                    "type": "string",
+                                    "format": "date-time"
+                                }
+                            },
+                            "required": ["id", "employee_number", "name"]
+                        }
+                    },
+                    "meta": {
+                        "type": "object",
+                        "properties": {
+                            "current_page": {
+                                "type": "integer"
+                            },
+                            "per_page": {
+                                "type": "integer"
+                            },
+                            "total": {
+                                "type": "integer"
+                            },
+                            "last_page": {
+                                "type": "integer"
+                            },
+                            "from": {
+                                "type": "integer"
+                            },
+                            "to": {
+                                "type": "integer"
+                            }
+                        }
+                    }
+                },
+                "required": ["success", "message", "data", "meta"]
+            },
+            "userCreateRequest": {
+                "type": "object",
+                "properties": {
+                    "employee_number": {
+                        "type": "string",
+                        "minLength": 6,
+                        "maxLength": 6,
+                        "pattern": "^\\d{6}$"
+                    },
+                    "name": {
+                        "type": "string",
+                        "maxLength": 255
+                    },
+                    "email": {
+                        "type": "string",
+                        "format": "email"
+                    },
+                    "password": {
+                        "type": "string",
+                        "format": "password",
+                        "minLength": 8,
+                        "pattern": "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[^A-Za-z0-9]).{8,}$"
+                    }
+                },
+                "required": ["employee_number", "name", "password"]
+            },
+            "userCreateResponse": {
+                "type": "object",
+                "properties": {
+                    "success": {
+                        "type": "boolean"
+                    },
+                    "message": {
+                        "type": "string"
+                    },
+                    "data": {
+                        "type": "object",
+                        "properties": {
+                            "id": {
+                                "type": "integer"
+                            },
+                            "employee_number": {
+                                "type": "string"
+                            },
+                            "name": {
+                                "type": "string"
+                            },
+                            "email": {
+                                "type": "string"
+                            },
+                            "created_at": {
+                                "type": "string",
+                                "format": "date-time"
+                            }
+                        },
+                        "required": ["id", "employee_number", "name"]
+                    }
+                },
+                "required": ["success", "message", "data"]
+            },
+            "userUpdateRequest": {
+                "type": "object",
+                "properties": {
+                    "employee_number": {
+                        "type": "string",
+                        "minLength": 6,
+                        "maxLength": 6,
+                        "pattern": "^\\d{6}$"
+                    },
+                    "name": {
+                        "type": "string",
+                        "maxLength": 255
+                    },
+                    "email": {
+                        "type": "string",
+                        "format": "email"
+                    },
+                    "password": {
+                        "type": "string",
+                        "format": "password",
+                        "minLength": 8,
+                        "pattern": "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[^A-Za-z0-9]).{8,}$"
+                    }
+                },
+                "required": ["employee_number", "name", "password"]
+            },
+            "userUpdateResponse": {
+                "type": "object",
+                "properties": {
+                    "success": {
+                        "type": "boolean"
+                    },
+                    "message": {
+                        "type": "string"
+                    },
+                    "data": {
+                        "type": "object",
+                        "properties": {
+                            "id": {
+                                "type": "integer"
+                            },
+                            "employee_number": {
+                                "type": "string"
+                            },
+                            "name": {
+                                "type": "string"
+                            },
+                            "email": {
+                                "type": "string"
+                            },
+                            "updated_at": {
+                                "type": "string",
+                                "format": "date-time"
+                            }
+                        },
+                        "required": ["id", "employee_number", "name"]
+                    }
+                },
+                "required": ["success", "message", "data"]
+            },
+            "userDeleteResponse": {
+                "type": "object",
+                "properties": {
+                    "success": {
+                        "type": "boolean"
+                    },
+                    "message": {
+                        "type": "string"
+                    },
+                    "data": {
+                        "type": "object"
+                    }
+                },
+                "required": ["success", "message", "data"]
+            },
+            "userRestoreRequest": {
+                "type": "object"
+            },
+            "userRestoreResponse": {
+                "type": "object",
+                "properties": {
+                    "success": {
+                        "type": "boolean"
+                    },
+                    "message": {
+                        "type": "string"
+                    },
+                    "data": {
+                        "type": "object",
+                        "properties": {
+                            "id": {
+                                "type": "integer"
+                            },
+                            "employee_number": {
+                                "type": "string"
+                            },
+                            "name": {
+                                "type": "string"
+                            },
+                            "email": {
+                                "type": "string"
+                            },
+                            "restored_at": {
+                                "type": "string",
+                                "format": "date-time"
+                            }
+                        },
+                        "required": ["id", "employee_number", "name"]
+                    }
+                },
+                "required": ["success", "message", "data"]
+            },
+            "userDetailResponse": {
+                "type": "object",
+                "properties": {
+                    "success": {
+                        "type": "boolean"
+                    },
+                    "message": {
+                        "type": "string"
+                    },
+                    "data": {
+                        "type": "object",
+                        "properties": {
+                            "id": {
+                                "type": "integer"
+                            },
+                            "employee_number": {
+                                "type": "string"
+                            },
+                            "name": {
+                                "type": "string"
+                            },
+                            "email": {
+                                "type": "string"
+                            },
+                            "created_at": {
+                                "type": "string",
+                                "format": "date-time"
+                            },
+                            "updated_at": {
+                                "type": "string",
+                                "format": "date-time"
+                            }
+                        },
+                        "required": ["id", "employee_number", "name"]
                     }
                 },
                 "required": ["success", "message", "data"]
@@ -294,6 +1023,177 @@
                     "success": true,
                     "message": "Successfull",
                     "data": []
+                }
+            },
+            "userListResponse200": {
+                "value": {
+                    "success": true,
+                    "message": "Successful",
+                    "data": [
+                        {
+                            "id": 1,
+                            "employee_number": "000001",
+                            "name": "Dummy Employee",
+                            "email": null,
+                            "email_verified_at": null,
+                            "created_at": "2026-02-14T17:29:18.000000Z",
+                            "updated_at": "2026-02-14T17:29:18.000000Z",
+                            "deleted_at": null
+                        }
+                    ],
+                    "meta": {
+                        "current_page": 1,
+                        "per_page": 10,
+                        "total": 1,
+                        "last_page": 1,
+                        "from": 1,
+                        "to": 1
+                    }
+                }
+            },
+            "userListResponse400": {
+                "value": {
+                    "success": false,
+                    "message": "The page field must be an integer.",
+                    "errors": {
+                        "page": "error.integer",
+                        "limit": "error.max",
+                        "search": "error.invalid_type"
+                    }
+                }
+            },
+            "userCreateRequest": {
+                "value": {
+                    "employee_number": "000002",
+                    "name": "Miss Brooke Reichert",
+                    "password": "@Qwer1234"
+                }
+            },
+            "userCreateResponse200": {
+                "value": {
+                    "success": true,
+                    "message": "Successful",
+                    "data": {
+                        "id": 2,
+                        "employee_number": "000002",
+                        "name": "Pam Spencer",
+                        "email": null,
+                        "created_at": "2026-02-16T04:56:48.000000Z"
+                    }
+                }
+            },
+            "userCreateResponse400": {
+                "value": {
+                    "success": false,
+                    "message": "The employee number has already been taken.",
+                    "errors": {
+                        "employee_number": "error.unique",
+                        "name": "error.required",
+                        "password": "error.password_strength"
+                    }
+                }
+            },
+            "userUpdateRequest": {
+                "value": {
+                    "employee_number": "000002",
+                    "name": "Miss Brooke Reichert",
+                    "password": "@Qwer1234"
+                }
+            },
+            "userUpdateResponse200": {
+                "value": {
+                    "success": true,
+                    "message": "Successful",
+                    "data": {
+                        "id": 2,
+                        "employee_number": "000002",
+                        "name": "Pam Spencer",
+                        "email": null,
+                        "updated_at": "2026-02-16T04:56:48.000000Z"
+                    }
+                }
+            },
+            "userUpdateResponse400": {
+                "value": {
+                    "success": false,
+                    "message": "The employee number has already been taken.",
+                    "errors": {
+                        "employee_number": "error.unique",
+                        "password": "error.password_strength"
+                    }
+                }
+            },
+            "userUpdateResponse404": {
+                "value": {
+                    "success": false,
+                    "message": "User not found",
+                    "errors": {
+                        "user": "error.not_found"
+                    }
+                }
+            },
+            "userDeleteResponse200": {
+                "value": {
+                    "success": true,
+                    "message": "Successful",
+                    "data": []
+                }
+            },
+            "userDeleteResponse404": {
+                "value": {
+                    "success": false,
+                    "message": "User not found",
+                    "errors": {
+                        "user": "error.not_found"
+                    }
+                }
+            },
+            "userRestoreRequest": {
+                "value": {}
+            },
+            "userRestoreResponse200": {
+                "value": {
+                    "success": true,
+                    "message": "Successful",
+                    "data": {
+                        "id": 2,
+                        "employee_number": "000002",
+                        "name": "Pam Spencer",
+                        "email": null,
+                        "restored_at": "2026-02-16T04:56:48.000000Z"
+                    }
+                }
+            },
+            "userRestoreResponse404": {
+                "value": {
+                    "success": false,
+                    "message": "User not found or not deleted",
+                    "errors": {
+                        "user": "error.not_found"
+                    }
+                }
+            },
+            "userDetailResponse200": {
+                "value": {
+                    "success": true,
+                    "message": "Successful",
+                    "data": {
+                        "id": 2,
+                        "employee_number": "000002",
+                        "name": "Pam Spencer",
+                        "email": null,
+                        "created_at": "2026-02-16T04:56:48.000000Z",
+                        "updated_at": "2026-02-16T07:21:19.000000Z"
+                    }
+                }
+            },
+            "userDetailResponse404": {
+                "value": {
+                    "success": false,
+                    "message": "User not found",
+                    "errors": {
+                        "user": "error.not_found"
+                    }
                 }
             }
         }
