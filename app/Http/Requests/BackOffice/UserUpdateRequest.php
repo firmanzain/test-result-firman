@@ -49,15 +49,7 @@ class UserUpdateRequest extends FormRequest
 
             $rules = $validator->failed()[$field] ?? [];
             $rule = strtolower(array_key_first($rules));
-
-            $errors[$field] = match ($rule) {
-                'required' => 'error.required',
-                'unique' => 'error.unique',
-                'email' => 'error.email',
-                'min' => 'error.min',
-                'size' => 'error.size',
-                default => 'error.invalid',
-            };
+            $errors[$field] = $this->mapRuleToErrorCode($rule);
         }
 
         throw new HttpResponseException(
@@ -67,6 +59,18 @@ class UserUpdateRequest extends FormRequest
                 400
             )
         );
+    }
+
+    private function mapRuleToErrorCode(string $rule): string
+    {
+        return match ($rule) {
+            'required' => 'error.required',
+            'unique' => 'error.unique',
+            'email' => 'error.email',
+            'min' => 'error.min',
+            'size' => 'error.size',
+            default => 'error.invalid',
+        };
     }
 
     protected function prepareForValidation(): void

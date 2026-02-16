@@ -38,7 +38,7 @@ class UserStoreRequest extends FormRequest
         $errors = [];
 
         foreach ($validator->failed() as $field => $rules) {
-            
+
             if ($field === 'password') {
                 $errors[$field] = 'error.password_strength';
                 continue;
@@ -46,14 +46,7 @@ class UserStoreRequest extends FormRequest
 
             $rules = $validator->failed()[$field] ?? [];
             $rule = strtolower(array_key_first($rules));
-
-            $errors[$field] = match ($rule) {
-                'required' => 'error.required',
-                'unique' => 'error.unique',
-                'email' => 'error.email',
-                'min' => 'error.min',
-                default => 'error.invalid',
-            };
+            $errors[$field] = $this->mapRuleToErrorCode($rule);
         }
 
         throw new HttpResponseException(
@@ -63,5 +56,17 @@ class UserStoreRequest extends FormRequest
                 400
             )
         );
+    }
+
+    private function mapRuleToErrorCode(string $rule): string
+    {
+        return match ($rule) {
+            'required' => 'error.required',
+            'unique' => 'error.unique',
+            'email' => 'error.email',
+            'min' => 'error.min',
+            'size' => 'error.size',
+            default => 'error.invalid',
+        };
     }
 }
