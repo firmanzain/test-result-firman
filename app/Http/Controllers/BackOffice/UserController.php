@@ -15,18 +15,19 @@ class UserController extends Controller
 {
     public function index(UserIndexRequest $request)
     {
+        $limit = (int) $request->query('limit', 10);
+        $search = $request->query('search');
+
         $query = User::query()
             ->whereNull('deleted_at');
 
-        if ($search = $request->query('search')) {
+        if ($search) {
             $query->where(function ($q) use ($search) {
-                $q->where('employee_number', 'like', "%{$search}%")
-                  ->orWhere('name', 'like', "%{$search}%")
-                  ->orWhere('email', 'like', "%{$search}%");
+                $q->where('employee_number', 'ILIKE', "%{$search}%")
+                  ->orWhere('name', 'ILIKE', "%{$search}%")
+                  ->orWhere('email', 'ILIKE', "%{$search}%");
             });
         }
-
-        $limit = (int) $request->query('limit', 10);
 
         $paginator = $query
             ->orderBy('created_at', 'desc')
