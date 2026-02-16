@@ -8,6 +8,7 @@ use Laravel\Sanctum\Http\Middleware\CheckForAnyAbility;
 use Illuminate\Http\Request;
 use App\Support\ApiResponse;
 use Illuminate\Auth\AuthenticationException;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 return Application::configure(basePath: dirname(__DIR__))
     ->withRouting(
@@ -26,6 +27,7 @@ return Application::configure(basePath: dirname(__DIR__))
         $exceptions->shouldRenderJsonWhen(function (Request $request, Throwable $e) {
             return $request->is('api/*') || $request->expectsJson();
         });
+
         $exceptions->render(function (AuthenticationException $e, Request $request) {
             return ApiResponse::error(
                 'Unauthenticated',
@@ -34,5 +36,17 @@ return Application::configure(basePath: dirname(__DIR__))
                 ],
                 401
             );
+        });
+
+        $exceptions->render(function (NotFoundHttpException $e, Request $request) {
+            if ($request->is('api/*')) {
+                return ApiResponse::error(
+                    'Route not found',
+                    [
+                        'route' => 'error.not_found',
+                    ],
+                    404
+                );
+            }
         });
     })->create();
