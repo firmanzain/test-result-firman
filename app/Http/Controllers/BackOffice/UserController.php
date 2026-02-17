@@ -3,7 +3,10 @@
 namespace App\Http\Controllers\BackOffice;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\BackOffice\UserDeleteRequest;
 use App\Http\Requests\BackOffice\UserIndexRequest;
+use App\Http\Requests\BackOffice\UserRestoreRequest;
+use App\Http\Requests\BackOffice\UserShowRequest;
 use App\Http\Requests\BackOffice\UserStoreRequest;
 use App\Http\Requests\BackOffice\UserUpdateRequest;
 use App\Models\User;
@@ -65,7 +68,7 @@ class UserController extends Controller
         );
     }
 
-    public function show($id)
+    public function show(UserShowRequest $request, int $id)
     {
         $user = User::whereNull('deleted_at')->find($id);
 
@@ -119,7 +122,7 @@ class UserController extends Controller
         );
     }
 
-    public function destroy($id)
+    public function destroy(UserDeleteRequest $request, int $id)
     {
         $user = User::whereNull('deleted_at')->find($id);
 
@@ -141,7 +144,7 @@ class UserController extends Controller
         );
     }
 
-    public function restore($id)
+    public function restore(UserRestoreRequest $request, int $id)
     {
         $user = User::onlyTrashed()->find($id);
 

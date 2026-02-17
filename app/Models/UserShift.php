@@ -10,6 +10,13 @@ class UserShift extends Model
         'shift_date' => 'date',
     ];
 
+    protected $fillable = [
+        'user_id',
+        'shift_id',
+        'shift_date',
+        'machine_code',
+    ];
+
     public function shift()
     {
         return $this->belongsTo(Shift::class, 'shift_id', 'id');
