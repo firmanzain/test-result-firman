@@ -13,26 +13,26 @@
     ],
     "tags": [
         {
-            "name": "Auth",
+            "name": "Backoffice - Auth",
             "description": "API Authentication"
         },
         {
-            "name": "User",
+            "name": "Backoffice - User",
             "description": "API Manage Users"
         },
         {
-            "name": "Machine",
+            "name": "Backoffice - Machine",
             "description": "API Manage Machine"
         },
         {
-            "name": "Shift",
+            "name": "Backoffice - Shift",
             "description": "API Manage Shift"
         }
     ],
     "paths": {
         "/backoffice/v1/auth/login": {
             "post": {
-                "tags": ["Auth"],
+                "tags": ["Backoffice - Auth"],
                 "description": "Login with authenticated user",
                 "requestBody": {
                     "content": {
@@ -99,7 +99,7 @@
         },
         "/backoffice/v1/auth/logout": {
             "post": {
-                "tags": ["Auth"],
+                "tags": ["Backoffice - Auth"],
                 "description": "Logout authenticated user",
                 "security": [
                     { "bearerAuth": [] }
@@ -154,7 +154,7 @@
         },
         "/backoffice/v1/user": {
             "get": {
-                "tags": ["User"],
+                "tags": ["Backoffice - User"],
                 "description": "Get list user with pagination",
                 "security": [
                     { "bearerAuth": [] }
@@ -213,7 +213,7 @@
                 }
             },
             "post": {
-                "tags": ["User"],
+                "tags": ["Backoffice - User"],
                 "description": "Create user employee",
                 "security": [
                     { "bearerAuth": [] }
@@ -283,7 +283,7 @@
         },
         "/backoffice/v1/user/{id}": {
             "get": {
-                "tags": ["User"],
+                "tags": ["Backoffice - User"],
                 "description": "Detail user employee",
                 "security": [
                     { "bearerAuth": [] }
@@ -355,7 +355,7 @@
                 }
             },
             "put": {
-                "tags": ["User"],
+                "tags": ["Backoffice - User"],
                 "description": "Update user employee",
                 "security": [
                     { "bearerAuth": [] }
@@ -441,7 +441,7 @@
                 }
             },
             "delete": {
-                "tags": ["User"],
+                "tags": ["Backoffice - User"],
                 "description": "Delete user employee",
                 "security": [
                     { "bearerAuth": [] }
@@ -515,7 +515,7 @@
         },
         "/backoffice/v1/user/{id}/restore": {
             "post": {
-                "tags": ["User"],
+                "tags": ["Backoffice - User"],
                 "description": "Restore deleted user employee",
                 "security": [
                     { "bearerAuth": [] }
@@ -603,7 +603,7 @@
         },
         "/backoffice/v1/machine": {
             "get": {
-                "tags": ["Machine"],
+                "tags": ["Backoffice - Machine"],
                 "description": "Get list machine with pagination",
                 "security": [
                     { "bearerAuth": [] }
@@ -664,7 +664,7 @@
         },
         "/backoffice/v1/machine/{machineCodeParam}": {
             "get": {
-                "tags": ["Machine"],
+                "tags": ["Backoffice - Machine"],
                 "description": "Detail machine with shift and user",
                 "security": [
                     { "bearerAuth": [] }
@@ -740,7 +740,7 @@
         },
         "/backoffice/v1/shift": {
             "get": {
-                "tags": ["Shift"],
+                "tags": ["Backoffice - Shift"],
                 "description": "Get list shift with pagination",
                 "security": [
                     { "bearerAuth": [] }
@@ -804,7 +804,7 @@
                 }
             },
             "post": {
-                "tags": ["Shift"],
+                "tags": ["Backoffice - Shift"],
                 "description": "Create shift employee",
                 "security": [
                     { "bearerAuth": [] }
@@ -874,7 +874,7 @@
         },
         "/backoffice/v1/shift/{id}": {
             "get": {
-                "tags": ["Shift"],
+                "tags": ["Backoffice - Shift"],
                 "description": "Detail shift employee",
                 "security": [
                     { "bearerAuth": [] }
@@ -946,7 +946,7 @@
                 }
             },
             "put": {
-                "tags": ["Shift"],
+                "tags": ["Backoffice - Shift"],
                 "description": "Update shift employee",
                 "security": [
                     { "bearerAuth": [] }
@@ -1032,7 +1032,7 @@
                 }
             },
             "delete": {
-                "tags": ["Shift"],
+                "tags": ["Backoffice - Shift"],
                 "description": "Delete shift employee",
                 "security": [
                     { "bearerAuth": [] }
@@ -1244,7 +1244,7 @@
                             "token": {
                                 "type": "string"
                             },
-                            "user": {
+                            "Backoffice - User": {
                                 "type": "object",
                                 "properties": {
                                     "id": {
@@ -1263,7 +1263,7 @@
                                 "required": ["id", "employee_number", "name"]
                             }
                         },
-                        "required": ["token", "user"]
+                        "required": ["token", "Backoffice - User"]
                     }
                 },
                 "required": ["success", "message"]
@@ -1660,7 +1660,7 @@
                                         "end_time": {
                                             "type": "string"
                                         },
-                                        "user": {
+                                        "Backoffice - User": {
                                             "type": "object",
                                             "properties": {
                                                 "id": {
@@ -1676,7 +1676,7 @@
                                             "required": ["id", "employee_number", "name"]
                                         }
                                     },
-                                    "required": ["shift_date", "shift_name", "day_of_week", "start_time", "end_time", "user"]
+                                    "required": ["shift_date", "shift_name", "day_of_week", "start_time", "end_time", "Backoffice - User"]
                                 }
                             }
                         },
@@ -1732,7 +1732,7 @@
                                 "machine_code": {
                                     "type": "string"
                                 },
-                                "shift": {
+                                "Backoffice - Shift": {
                                     "type": "object",
                                     "properties": {
                                         "id": {
@@ -1753,7 +1753,7 @@
                                     },
                                     "required": ["id", "name", "day_of_week", "start_time", "end_time"]
                                 },
-                                "user": {
+                                "Backoffice - User": {
                                     "type": "object",
                                     "properties": {
                                         "id": {
@@ -1777,7 +1777,7 @@
                                     "format": "date-time"
                                 }
                             },
-                            "required": ["id", "shift_date", "machine_code", "shift", "user", "created_at", "updated_at"]
+                            "required": ["id", "shift_date", "machine_code", "Backoffice - Shift", "Backoffice - User", "created_at", "updated_at"]
                         }
                     },
                     "meta": {
@@ -1876,7 +1876,7 @@
                     "machine_code": {
                         "type": "string"
                     },
-                    "shift": {
+                    "Backoffice - Shift": {
                         "type": "object",
                         "properties": {
                             "id": {
@@ -1897,7 +1897,7 @@
                         },
                         "required": ["id", "name", "day_of_week", "start_time", "end_time"]
                     },
-                    "user": {
+                    "Backoffice - User": {
                         "type": "object",
                         "properties": {
                             "id": {
@@ -1921,7 +1921,7 @@
                         "format": "date-time"
                     }
                 },
-                "required": ["id", "shift_date", "machine_code", "shift", "user", "created_at", "updated_at"]
+                "required": ["id", "shift_date", "machine_code", "Backoffice - Shift", "Backoffice - User", "created_at", "updated_at"]
             },
             "shiftUpdateRequest": {
                 "type": "object",
@@ -1979,6 +1979,21 @@
                     }
                 },
                 "required": ["success", "message", "data"]
+            },
+            "shiftDeleteResponse": {
+                "type": "object",
+                "properties": {
+                    "success": {
+                        "type": "boolean"
+                    },
+                    "message": {
+                        "type": "string"
+                    },
+                    "data": {
+                        "type": "object"
+                    }
+                },
+                "required": ["success", "message", "data"]
             }
         },
         "examples": {
@@ -1987,7 +2002,7 @@
                     "success": false,
                     "message": "Unauthenticated",
                     "errors": {
-                        "auth": "error.unauthenticated"
+                        "Backoffice - Auth": "error.unauthenticated"
                     }
                 }
             },
@@ -2003,7 +2018,7 @@
                     "message": "Successfull",
                     "data": {
                         "token": "5|NN1DfWX9K0eEnfGPzxRkGacmXS1GKnIu08rUBLJZ69407e59",
-                        "user": {
+                        "Backoffice - User": {
                             "id": 1,
                             "employee_number": "000001",
                             "name": "Dummy Employee",
@@ -2144,7 +2159,7 @@
                     "success": false,
                     "message": "User not found",
                     "errors": {
-                        "user": "error.not_found"
+                        "Backoffice - User": "error.not_found"
                     }
                 }
             },
@@ -2169,7 +2184,7 @@
                     "success": false,
                     "message": "User not found",
                     "errors": {
-                        "user": "error.not_found"
+                        "Backoffice - User": "error.not_found"
                     }
                 }
             },
@@ -2203,7 +2218,7 @@
                     "success": false,
                     "message": "User not found or not deleted",
                     "errors": {
-                        "user": "error.not_found"
+                        "Backoffice - User": "error.not_found"
                     }
                 }
             },
@@ -2235,7 +2250,7 @@
                     "success": false,
                     "message": "User not found",
                     "errors": {
-                        "user": "error.not_found"
+                        "Backoffice - User": "error.not_found"
                     }
                 }
             },
@@ -2285,7 +2300,7 @@
                                 "day_of_week": 5,
                                 "start_time": "23:00:00",
                                 "end_time": "07:00:00",
-                                "user": {
+                                "Backoffice - User": {
                                     "id": 1,
                                     "employee_number": "000001",
                                     "name": "Dummy Employee"
@@ -2297,7 +2312,7 @@
                                 "day_of_week": 4,
                                 "start_time": "15:00:00",
                                 "end_time": "23:00:00",
-                                "user": {
+                                "Backoffice - User": {
                                     "id": 1,
                                     "employee_number": "000001",
                                     "name": "Dummy Employee"
@@ -2330,7 +2345,7 @@
                     "success": false,
                     "message": "Machine not found",
                     "errors": {
-                        "machine": "error.not_found"
+                        "Backoffice - Machine": "error.not_found"
                     }
                 }
             },
@@ -2343,14 +2358,14 @@
                             "id": 21,
                             "shift_date": "2026-02-27",
                             "machine_code": "FILLING-MACHINE-001",
-                            "shift": {
+                            "Backoffice - Shift": {
                                 "id": 15,
                                 "name": "Shift Malam",
                                 "day_of_week": 5,
                                 "start_time": "23:00:00",
                                 "end_time": "07:00:00"
                             },
-                            "user": {
+                            "Backoffice - User": {
                                 "id": 1,
                                 "employee_number": "000001",
                                 "name": "Dummy Employee"
@@ -2362,14 +2377,14 @@
                             "id": 20,
                             "shift_date": "2026-02-26",
                             "machine_code": "FILLING-MACHINE-001",
-                            "shift": {
+                            "Backoffice - Shift": {
                                 "id": 11,
                                 "name": "Shift Siang",
                                 "day_of_week": 4,
                                 "start_time": "15:00:00",
                                 "end_time": "23:00:00"
                             },
-                            "user": {
+                            "Backoffice - User": {
                                 "id": 1,
                                 "employee_number": "000001",
                                 "name": "Dummy Employee"
@@ -2444,14 +2459,14 @@
                         "id": 23,
                         "shift_date": "2026-03-02",
                         "machine_code": "FILLING-MACHINE-001",
-                        "shift": {
+                        "Backoffice - Shift": {
                             "id": 1,
                             "name": "Shift Pagi",
                             "day_of_week": 1,
                             "start_time": "07:00:00",
                             "end_time": "15:00:00"
                         },
-                        "user": {
+                        "Backoffice - User": {
                             "id": 1,
                             "employee_number": "000001",
                             "name": "Dummy Employee"
@@ -2475,7 +2490,7 @@
                     "success": false,
                     "message": "Shift not found",
                     "errors": {
-                        "shift": "error.not_found"
+                        "Backoffice - Shift": "error.not_found"
                     }
                 }
             },
@@ -2517,7 +2532,7 @@
                     "success": false,
                     "message": "Shift not found",
                     "errors": {
-                        "shift": "error.not_found"
+                        "Backoffice - Shift": "error.not_found"
                     }
                 }
             },
@@ -2542,7 +2557,7 @@
                     "success": false,
                     "message": "Shift not found",
                     "errors": {
-                        "shift": "error.not_found"
+                        "Backoffice - Shift": "error.not_found"
                     }
                 }
             }
