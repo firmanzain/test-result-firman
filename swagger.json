@@ -31,6 +31,10 @@
         {
             "name": "Machine - Auth",
             "description": "API Authentication"
+        },
+        {
+            "name": "Machine - Profile",
+            "description": "API Get Profile"
         }
     ],
     "paths": {
@@ -1229,6 +1233,47 @@
                     }
                 }
             }
+        },
+        "/machine/v1/profile": {
+            "get": {
+                "tags": ["Machine - Profile"],
+                "description": "Get login profile",
+                "security": [
+                    { "bearerAuth": [] }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/profileMachineResponse"
+                                },
+                                "examples": {
+                                    "response": {
+                                        "$ref": "#/components/examples/profileMachineResponse200"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/defaultErrorResponse"
+                                },
+                                "examples": {
+                                    "response": {
+                                        "$ref": "#/components/examples/defaultResponse401"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
         }
     },
     "components": {
@@ -1861,7 +1906,7 @@
                                 "machine_code": {
                                     "type": "string"
                                 },
-                                "Backoffice - Shift": {
+                                "shift": {
                                     "type": "object",
                                     "properties": {
                                         "id": {
@@ -1906,7 +1951,7 @@
                                     "format": "date-time"
                                 }
                             },
-                            "required": ["id", "shift_date", "machine_code", "Backoffice - Shift", "user", "created_at", "updated_at"]
+                            "required": ["id", "shift_date", "machine_code", "shift", "user", "created_at", "updated_at"]
                         }
                     },
                     "meta": {
@@ -2005,7 +2050,7 @@
                     "machine_code": {
                         "type": "string"
                     },
-                    "Backoffice - Shift": {
+                    "shift": {
                         "type": "object",
                         "properties": {
                             "id": {
@@ -2050,7 +2095,7 @@
                         "format": "date-time"
                     }
                 },
-                "required": ["id", "shift_date", "machine_code", "Backoffice - Shift", "user", "created_at", "updated_at"]
+                "required": ["id", "shift_date", "machine_code", "shift", "user", "created_at", "updated_at"]
             },
             "shiftUpdateRequest": {
                 "type": "object",
@@ -2200,6 +2245,70 @@
                     }
                 },
                 "required": ["success", "message"]
+            },
+            "profileMachineResponse": {
+                "type": "object",
+                "properties": {
+                    "success": {
+                        "type": "boolean"
+                    },
+                    "message": {
+                        "type": "string"
+                    },
+                    "data": {
+                        "type": "object",
+                        "properties": {
+                            "user": {
+                                "type": "object",
+                                "properties": {
+                                    "id": {
+                                        "type": "integer"
+                                    },
+                                    "employee_number": {
+                                        "type": "string"
+                                    },
+                                    "name": {
+                                        "type": "string"
+                                    }
+                                },
+                                "required": ["id", "employee_number", "name"]
+                            },
+                            "machine": {
+                                "type": "object",
+                                "properties": {
+                                    "machine_code": {
+                                        "type": "string"
+                                    }
+                                },
+                                "required": ["machine_code"]
+                            },
+                            "shift": {
+                                "type": "object",
+                                "properties": {
+                                    "shift_date": {
+                                        "type": "string",
+                                        "format": "date"
+                                    },
+                                    "name": {
+                                        "type": "string"
+                                    },
+                                    "start_time": {
+                                        "type": "string"
+                                    },
+                                    "end_time": {
+                                        "type": "string"
+                                    },
+                                    "is_active": {
+                                        "type": "boolean"
+                                    }
+                                },
+                                "required": ["shift_date", "name", "start_time", "end_time", "is_active"]
+                            }
+                        },
+                        "required": ["user", "machine", "shift"]
+                    }
+                },
+                "required": ["success", "message", "data"]
             }
         },
         "examples": {
@@ -2565,7 +2674,7 @@
                             "id": 21,
                             "shift_date": "2026-02-27",
                             "machine_code": "FILLING-MACHINE-001",
-                            "Backoffice - Shift": {
+                            "shift": {
                                 "id": 15,
                                 "name": "Shift Malam",
                                 "day_of_week": 5,
@@ -2584,7 +2693,7 @@
                             "id": 20,
                             "shift_date": "2026-02-26",
                             "machine_code": "FILLING-MACHINE-001",
-                            "Backoffice - Shift": {
+                            "shift": {
                                 "id": 11,
                                 "name": "Shift Siang",
                                 "day_of_week": 4,
@@ -2666,7 +2775,7 @@
                         "id": 23,
                         "shift_date": "2026-03-02",
                         "machine_code": "FILLING-MACHINE-001",
-                        "Backoffice - Shift": {
+                        "shift": {
                             "id": 1,
                             "name": "Shift Pagi",
                             "day_of_week": 1,
@@ -2697,7 +2806,7 @@
                     "success": false,
                     "message": "Shift not found",
                     "errors": {
-                        "Backoffice - Shift": "error.not_found"
+                        "shift": "error.not_found"
                     }
                 }
             },
@@ -2739,7 +2848,7 @@
                     "success": false,
                     "message": "Shift not found",
                     "errors": {
-                        "Backoffice - Shift": "error.not_found"
+                        "shift": "error.not_found"
                     }
                 }
             },
@@ -2764,7 +2873,7 @@
                     "success": false,
                     "message": "Shift not found",
                     "errors": {
-                        "Backoffice - Shift": "error.not_found"
+                        "shift": "error.not_found"
                     }
                 }
             },
@@ -2826,6 +2935,29 @@
                     "success": true,
                     "message": "Successfull",
                     "data": []
+                }
+            },
+            "profileMachineResponse200": {
+                "value": {
+                    "success": true,
+                    "message": "Successful",
+                    "data": {
+                        "user": {
+                            "id": 1,
+                            "employee_number": "000001",
+                            "name": "Dummy Employee"
+                        },
+                        "machine": {
+                            "machine_code": "FILLING-MACHINE-001"
+                        },
+                        "shift": {
+                            "shift_date": "2026-02-18",
+                            "name": "Shift Malam",
+                            "start_time": "23:00:00",
+                            "end_time": "07:00:00",
+                            "is_active": true
+                        }
+                    }
                 }
             }
         }
