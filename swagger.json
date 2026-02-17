@@ -23,6 +23,10 @@
         {
             "name": "Machine",
             "description": "API Manage Machine"
+        },
+        {
+            "name": "Shift",
+            "description": "API Manage Shift"
         }
     ],
     "paths": {
@@ -156,9 +160,9 @@
                     { "bearerAuth": [] }
                 ],
                 "parameters": [
-                    { "$ref": "#/components/parameters/pageParams" },
-                    { "$ref": "#/components/parameters/limitParams" },
-                    { "$ref": "#/components/parameters/searchParams" }
+                    { "$ref": "#/components/parameters/pageParam" },
+                    { "$ref": "#/components/parameters/limitParam" },
+                    { "$ref": "#/components/parameters/searchParam" }
                 ],
                 "responses": {
                     "200": {
@@ -285,7 +289,7 @@
                     { "bearerAuth": [] }
                 ],
                 "parameters": [
-                    { "$ref": "#/components/parameters/idParams" }
+                    { "$ref": "#/components/parameters/idParam" }
                 ],
                 "responses": {
                     "200": {
@@ -298,6 +302,21 @@
                                 "examples": {
                                     "response": {
                                         "$ref": "#/components/examples/userDetailResponse200"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/defaultErrorResponse"
+                                },
+                                "examples": {
+                                    "response": {
+                                        "$ref": "#/components/examples/userDetailResponse400"
                                     }
                                 }
                             }
@@ -342,7 +361,7 @@
                     { "bearerAuth": [] }
                 ],
                 "parameters": [
-                    { "$ref": "#/components/parameters/idParams" }
+                    { "$ref": "#/components/parameters/idParam" }
                 ],
                 "requestBody": {
                     "content": {
@@ -428,7 +447,7 @@
                     { "bearerAuth": [] }
                 ],
                 "parameters": [
-                    { "$ref": "#/components/parameters/idParams" }
+                    { "$ref": "#/components/parameters/idParam" }
                 ],
                 "responses": {
                     "200": {
@@ -441,6 +460,21 @@
                                 "examples": {
                                     "response": {
                                         "$ref": "#/components/examples/userDeleteResponse200"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/defaultErrorResponse"
+                                },
+                                "examples": {
+                                    "response": {
+                                        "$ref": "#/components/examples/userDeleteResponse400"
                                     }
                                 }
                             }
@@ -487,7 +521,7 @@
                     { "bearerAuth": [] }
                 ],
                 "parameters": [
-                    { "$ref": "#/components/parameters/idParams" }
+                    { "$ref": "#/components/parameters/idParam" }
                 ],
                 "requestBody": {
                     "content": {
@@ -514,6 +548,21 @@
                                 "examples": {
                                     "response": {
                                         "$ref": "#/components/examples/userRestoreResponse200"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/defaultErrorResponse"
+                                },
+                                "examples": {
+                                    "response": {
+                                        "$ref": "#/components/examples/userRestoreResponse400"
                                     }
                                 }
                             }
@@ -560,9 +609,9 @@
                     { "bearerAuth": [] }
                 ],
                 "parameters": [
-                    { "$ref": "#/components/parameters/pageParams" },
-                    { "$ref": "#/components/parameters/limitParams" },
-                    { "$ref": "#/components/parameters/searchParams" }
+                    { "$ref": "#/components/parameters/pageParam" },
+                    { "$ref": "#/components/parameters/limitParam" },
+                    { "$ref": "#/components/parameters/searchParam" }
                 ],
                 "responses": {
                     "200": {
@@ -613,7 +662,7 @@
                 }
             }
         },
-        "/backoffice/v1/machine/{machineCodeParams}": {
+        "/backoffice/v1/machine/{machineCodeParam}": {
             "get": {
                 "tags": ["Machine"],
                 "description": "Detail machine with shift and user",
@@ -621,9 +670,9 @@
                     { "bearerAuth": [] }
                 ],
                 "parameters": [
-                    { "$ref": "#/components/parameters/machineCodeParams" },
-                    { "$ref": "#/components/parameters/pageParams" },
-                    { "$ref": "#/components/parameters/limitParams" }
+                    { "$ref": "#/components/parameters/machineCodeParam" },
+                    { "$ref": "#/components/parameters/pageParam" },
+                    { "$ref": "#/components/parameters/limitParam" }
                 ],
                 "responses": {
                     "200": {
@@ -688,6 +737,372 @@
                     }
                 }
             }
+        },
+        "/backoffice/v1/shift": {
+            "get": {
+                "tags": ["Shift"],
+                "description": "Get list shift with pagination",
+                "security": [
+                    { "bearerAuth": [] }
+                ],
+                "parameters": [
+                    { "$ref": "#/components/parameters/pageParam" },
+                    { "$ref": "#/components/parameters/limitParam" },
+                    { "$ref": "#/components/parameters/startDateParam" },
+                    { "$ref": "#/components/parameters/endDateParam" },
+                    { "$ref": "#/components/parameters/machineCodeParam" },
+                    { "$ref": "#/components/parameters/userIdParam" },
+                    { "$ref": "#/components/parameters/employeeNumberParam" },
+                    { "$ref": "#/components/parameters/searchParam" }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/shiftListResponse"
+                                },
+                                "examples": {
+                                    "response": {
+                                        "$ref": "#/components/examples/shiftListResponse200"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/defaultErrorResponse"
+                                },
+                                "examples": {
+                                    "response": {
+                                        "$ref": "#/components/examples/shiftListResponse400"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/defaultErrorResponse"
+                                },
+                                "examples": {
+                                    "response": {
+                                        "$ref": "#/components/examples/defaultResponse401"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "tags": ["Shift"],
+                "description": "Create shift employee",
+                "security": [
+                    { "bearerAuth": [] }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/shiftCreateRequest"
+                            },
+                            "examples": {
+                                "request": {
+                                    "$ref": "#/components/examples/shiftCreateRequest"
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Success response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/shiftCreateResponse"
+                                },
+                                "examples": {
+                                    "response": {
+                                        "$ref": "#/components/examples/shiftCreateResponse200"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/defaultErrorResponse"
+                                },
+                                "examples": {
+                                    "response": {
+                                        "$ref": "#/components/examples/shiftCreateResponse400"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/defaultErrorResponse"
+                                },
+                                "examples": {
+                                    "response": {
+                                        "$ref": "#/components/examples/defaultResponse401"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/backoffice/v1/shift/{id}": {
+            "get": {
+                "tags": ["Shift"],
+                "description": "Detail shift employee",
+                "security": [
+                    { "bearerAuth": [] }
+                ],
+                "parameters": [
+                    { "$ref": "#/components/parameters/idParam" }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/shiftDetailResponse"
+                                },
+                                "examples": {
+                                    "response": {
+                                        "$ref": "#/components/examples/shiftDetailResponse200"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/defaultErrorResponse"
+                                },
+                                "examples": {
+                                    "response": {
+                                        "$ref": "#/components/examples/shiftDetailResponse400"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/defaultErrorResponse"
+                                },
+                                "examples": {
+                                    "response": {
+                                        "$ref": "#/components/examples/defaultResponse401"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Not found response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/defaultErrorResponse"
+                                },
+                                "examples": {
+                                    "response": {
+                                        "$ref": "#/components/examples/shiftDetailResponse404"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "put": {
+                "tags": ["Shift"],
+                "description": "Update shift employee",
+                "security": [
+                    { "bearerAuth": [] }
+                ],
+                "parameters": [
+                    { "$ref": "#/components/parameters/idParam" }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/shiftUpdateRequest"
+                            },
+                            "examples": {
+                                "request": {
+                                    "$ref": "#/components/examples/shiftUpdateRequest"
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Success response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/shiftUpdateResponse"
+                                },
+                                "examples": {
+                                    "response": {
+                                        "$ref": "#/components/examples/shiftUpdateResponse200"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/defaultErrorResponse"
+                                },
+                                "examples": {
+                                    "response": {
+                                        "$ref": "#/components/examples/shiftUpdateResponse400"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/defaultErrorResponse"
+                                },
+                                "examples": {
+                                    "response": {
+                                        "$ref": "#/components/examples/defaultResponse401"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Not found response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/defaultErrorResponse"
+                                },
+                                "examples": {
+                                    "response": {
+                                        "$ref": "#/components/examples/shiftUpdateResponse404"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "tags": ["Shift"],
+                "description": "Delete shift employee",
+                "security": [
+                    { "bearerAuth": [] }
+                ],
+                "parameters": [
+                    { "$ref": "#/components/parameters/idParam" }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/shiftDeleteResponse"
+                                },
+                                "examples": {
+                                    "response": {
+                                        "$ref": "#/components/examples/shiftDeleteResponse200"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/defaultErrorResponse"
+                                },
+                                "examples": {
+                                    "response": {
+                                        "$ref": "#/components/examples/shiftDeleteResponse400"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/defaultErrorResponse"
+                                },
+                                "examples": {
+                                    "response": {
+                                        "$ref": "#/components/examples/defaultResponse401"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Not found response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/defaultErrorResponse"
+                                },
+                                "examples": {
+                                    "response": {
+                                        "$ref": "#/components/examples/shiftDeleteResponse404"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
         }
     },
     "components": {
@@ -699,52 +1114,89 @@
             }
         },
         "parameters": {
-            "pageParams": {
-                "name": "pageParams",
+            "pageParam": {
+                "name": "pageParam",
                 "in": "query",
-                "description": "Page parameters",
+                "description": "Page parameter",
                 "schema": {
                     "type": "number",
                     "example": 1
                 }
             },
-            "limitParams": {
-                "name": "limitParams",
+            "limitParam": {
+                "name": "limitParam",
                 "in": "query",
-                "description": "Limit parameters",
+                "description": "Limit parameter",
                 "schema": {
                     "type": "number",
                     "example": 10
                 }
             },
-            "searchParams": {
-                "name": "searchParams",
+            "searchParam": {
+                "name": "searchParam",
                 "in": "query",
-                "description": "Search parameters",
+                "description": "Search parameter",
                 "schema": {
                     "type": "string",
                     "example": "Data"
                 }
             },
-            "idParams": {
-                "name": "idParams",
+            "idParam": {
+                "name": "idParam",
                 "in": "path",
-                "description": "Id parameters",
+                "description": "Id parameter",
                 "schema": {
                     "type": "integer",
                     "example": "1"
                 },
                 "required": true
             },
-            "machineCodeParams": {
-                "name": "machineCodeParams",
-                "in": "path",
-                "description": "Machine code parameters",
+            "machineCodeParam": {
+                "name": "machineCodeParam",
+                "in": "query",
+                "description": "Machine code parameter",
                 "schema": {
                     "type": "string",
                     "example": "FILLING-MACHINE-001"
-                },
-                "required": true
+                }
+            },
+            "userIdParam": {
+                "name": "userIdParam",
+                "in": "query",
+                "description": "User id parameter",
+                "schema": {
+                    "type": "integer",
+                    "example": 1
+                }
+            },
+            "employeeNumberParam": {
+                "name": "employeeNumberParam",
+                "in": "query",
+                "description": "Employee number parameter",
+                "schema": {
+                    "type": "string",
+                    "example": "000001"
+                }
+            },
+            "startDateParam": {
+                "name": "startDateParam",
+                "in": "query",
+                "description": "Start date parameter",
+                "schema": {
+                    "type": "string",
+                    "format": "date",
+                    "example": "2026-02-01"
+                }
+            },
+            "endDateParam": {
+                "name": "endDateParam",
+                "in": "query",
+                "description": "End date parameter",
+                "schema": {
+                    "type": "string",
+                    "format": "date",
+                    "example": "2026-02-28"
+                }
             }
         },
         "schemas": {
@@ -1224,7 +1676,7 @@
                                             "required": ["id", "employee_number", "name"]
                                         }
                                     },
-                                    "required": ["machine_code", "total_assigned_shifts", "last_assigned_date", "user"]
+                                    "required": ["shift_date", "shift_name", "day_of_week", "start_time", "end_time", "user"]
                                 }
                             }
                         },
@@ -1255,6 +1707,278 @@
                     }
                 },
                 "required": ["success", "message", "data", "meta"]
+            },
+            "shiftListResponse": {
+                "type": "object",
+                "properties": {
+                    "success": {
+                        "type": "boolean"
+                    },
+                    "message": {
+                        "type": "string"
+                    },
+                    "data": {
+                        "type": "array",
+                        "items": {
+                            "type": "object",
+                            "properties": {
+                                "id": {
+                                    "type": "integer"
+                                },
+                                "shift_date": {
+                                    "type": "string",
+                                    "format": "date"
+                                },
+                                "machine_code": {
+                                    "type": "string"
+                                },
+                                "shift": {
+                                    "type": "object",
+                                    "properties": {
+                                        "id": {
+                                            "type": "integer"
+                                        },
+                                        "name": {
+                                            "type": "string"
+                                        },
+                                        "day_of_week": {
+                                            "type": "integer"
+                                        },
+                                        "start_time": {
+                                            "type": "string"
+                                        },
+                                        "end_time": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "required": ["id", "name", "day_of_week", "start_time", "end_time"]
+                                },
+                                "user": {
+                                    "type": "object",
+                                    "properties": {
+                                        "id": {
+                                            "type": "integer"
+                                        },
+                                        "employee_number": {
+                                            "type": "string"
+                                        },
+                                        "name": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "required": ["id", "employee_number", "name"]
+                                },
+                                "created_at": {
+                                    "type": "string",
+                                    "format": "date-time"
+                                },
+                                "updated_at": {
+                                    "type": "string",
+                                    "format": "date-time"
+                                }
+                            },
+                            "required": ["id", "shift_date", "machine_code", "shift", "user", "created_at", "updated_at"]
+                        }
+                    },
+                    "meta": {
+                        "type": "object",
+                        "properties": {
+                            "current_page": {
+                                "type": "integer"
+                            },
+                            "per_page": {
+                                "type": "integer"
+                            },
+                            "total": {
+                                "type": "integer"
+                            },
+                            "last_page": {
+                                "type": "integer"
+                            },
+                            "from": {
+                                "type": "integer"
+                            },
+                            "to": {
+                                "type": "integer"
+                            }
+                        }
+                    }
+                },
+                "required": ["success", "message", "data", "meta"]
+            },
+            "shiftCreateRequest": {
+                "type": "object",
+                "properties": {
+                    "user_id": {
+                        "type": "integer"
+                    },
+                    "shift_id": {
+                        "type": "integer"
+                    },
+                    "shift_date": {
+                        "type": "string",
+                        "format": "date"
+                    },
+                    "machine_code": {
+                        "type": "string"
+                    }
+                },
+                "required": ["user_id", "shift_id", "shift_date", "machine_code"]
+            },
+            "shiftCreateResponse": {
+                "type": "object",
+                "properties": {
+                    "success": {
+                        "type": "boolean"
+                    },
+                    "message": {
+                        "type": "string"
+                    },
+                    "data": {
+                        "type": "object",
+                        "properties": {
+                            "id": {
+                                "type": "integer"
+                            },
+                            "user_id": {
+                                "type": "integer"
+                            },
+                            "shift_id": {
+                                "type": "integer"
+                            },
+                            "shift_date": {
+                                "type": "string",
+                                "format": "date"
+                            },
+                            "machine_code": {
+                                "type": "string"
+                            },
+                            "created_at": {
+                                "type": "string",
+                                "format": "date-time"
+                            }
+                        },
+                        "required": ["id", "user_id", "shift_id", "shift_date", "machine_code", "created_at"]
+                    }
+                },
+                "required": ["success", "message", "data"]
+            },
+            "shiftDetailResponse": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "integer"
+                    },
+                    "shift_date": {
+                        "type": "string",
+                        "format": "date"
+                    },
+                    "machine_code": {
+                        "type": "string"
+                    },
+                    "shift": {
+                        "type": "object",
+                        "properties": {
+                            "id": {
+                                "type": "integer"
+                            },
+                            "name": {
+                                "type": "string"
+                            },
+                            "day_of_week": {
+                                "type": "integer"
+                            },
+                            "start_time": {
+                                "type": "string"
+                            },
+                            "end_time": {
+                                "type": "string"
+                            }
+                        },
+                        "required": ["id", "name", "day_of_week", "start_time", "end_time"]
+                    },
+                    "user": {
+                        "type": "object",
+                        "properties": {
+                            "id": {
+                                "type": "integer"
+                            },
+                            "employee_number": {
+                                "type": "string"
+                            },
+                            "name": {
+                                "type": "string"
+                            }
+                        },
+                        "required": ["id", "employee_number", "name"]
+                    },
+                    "created_at": {
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "updated_at": {
+                        "type": "string",
+                        "format": "date-time"
+                    }
+                },
+                "required": ["id", "shift_date", "machine_code", "shift", "user", "created_at", "updated_at"]
+            },
+            "shiftUpdateRequest": {
+                "type": "object",
+                "properties": {
+                    "user_id": {
+                        "type": "integer"
+                    },
+                    "shift_id": {
+                        "type": "integer"
+                    },
+                    "shift_date": {
+                        "type": "string",
+                        "format": "date"
+                    },
+                    "machine_code": {
+                        "type": "string"
+                    }
+                },
+                "required": ["user_id", "shift_id", "shift_date", "machine_code"]
+            },
+            "shiftUpdateResponse": {
+                "type": "object",
+                "properties": {
+                    "success": {
+                        "type": "boolean"
+                    },
+                    "message": {
+                        "type": "string"
+                    },
+                    "data": {
+                        "type": "object",
+                        "properties": {
+                            "id": {
+                                "type": "integer"
+                            },
+                            "user_id": {
+                                "type": "integer"
+                            },
+                            "shift_id": {
+                                "type": "integer"
+                            },
+                            "shift_date": {
+                                "type": "string",
+                                "format": "date"
+                            },
+                            "machine_code": {
+                                "type": "string"
+                            },
+                            "updated_at": {
+                                "type": "string",
+                                "format": "date-time"
+                            }
+                        },
+                        "required": ["id", "user_id", "shift_id", "shift_date", "machine_code", "updated_at"]
+                    }
+                },
+                "required": ["success", "message", "data"]
             }
         },
         "examples": {
@@ -1431,6 +2155,15 @@
                     "data": []
                 }
             },
+            "userDeleteResponse400": {
+                "value": {
+                    "success": false,
+                    "message": "The id field must be an integer.",
+                    "errors": {
+                        "id": "error.invalid"
+                    }
+                }
+            },
             "userDeleteResponse404": {
                 "value": {
                     "success": false,
@@ -1456,6 +2189,15 @@
                     }
                 }
             },
+            "userRestoreResponse400": {
+                "value": {
+                    "success": false,
+                    "message": "The id field must be an integer.",
+                    "errors": {
+                        "id": "error.invalid"
+                    }
+                }
+            },
             "userRestoreResponse404": {
                 "value": {
                     "success": false,
@@ -1476,6 +2218,15 @@
                         "email": null,
                         "created_at": "2026-02-16T04:56:48.000000Z",
                         "updated_at": "2026-02-16T07:21:19.000000Z"
+                    }
+                }
+            },
+            "userDetailResponse400": {
+                "value": {
+                    "success": false,
+                    "message": "The id field must be an integer.",
+                    "errors": {
+                        "id": "error.integer"
                     }
                 }
             },
@@ -1580,6 +2331,218 @@
                     "message": "Machine not found",
                     "errors": {
                         "machine": "error.not_found"
+                    }
+                }
+            },
+            "shiftListResponse200": {
+                "value": {
+                    "success": true,
+                    "message": "Successful",
+                    "data": [
+                        {
+                            "id": 21,
+                            "shift_date": "2026-02-27",
+                            "machine_code": "FILLING-MACHINE-001",
+                            "shift": {
+                                "id": 15,
+                                "name": "Shift Malam",
+                                "day_of_week": 5,
+                                "start_time": "23:00:00",
+                                "end_time": "07:00:00"
+                            },
+                            "user": {
+                                "id": 1,
+                                "employee_number": "000001",
+                                "name": "Dummy Employee"
+                            },
+                            "created_at": "2026-02-15 00:29:19",
+                            "updated_at": "2026-02-15 00:29:19"
+                        },
+                        {
+                            "id": 20,
+                            "shift_date": "2026-02-26",
+                            "machine_code": "FILLING-MACHINE-001",
+                            "shift": {
+                                "id": 11,
+                                "name": "Shift Siang",
+                                "day_of_week": 4,
+                                "start_time": "15:00:00",
+                                "end_time": "23:00:00"
+                            },
+                            "user": {
+                                "id": 1,
+                                "employee_number": "000001",
+                                "name": "Dummy Employee"
+                            },
+                            "created_at": "2026-02-15 00:29:19",
+                            "updated_at": "2026-02-15 00:29:19"
+                        }
+                    ],
+                    "meta": {
+                        "current_page": 1,
+                        "per_page": 2,
+                        "total": 21,
+                        "last_page": 11,
+                        "from": 1,
+                        "to": 2
+                    }
+                }
+            },
+            "shiftListResponse400": {
+                "value": {
+                    "success": false,
+                    "message": "The page field must be an integer.",
+                    "errors": {
+                        "page": "error.integer",
+                        "limit": "error.integer",
+                        "user_id": "error.integer",
+                        "employee_number": "error.max",
+                        "machine_code": "error.invalid_type",
+                        "search": "error.invalid_type"
+                    }
+                }
+            },
+            "shiftCreateRequest": {
+                "value": {
+                    "user_id": 1,
+                    "shift_id": 1,
+                    "shift_date": "2026-03-02",
+                    "machine_code": "FILLING-MACHINE-001"
+                }
+            },
+            "shiftCreateResponse200": {
+                "value": {
+                    "success": true,
+                    "message": "Successful",
+                    "data": {
+                        "id": 23,
+                        "user_id": 1,
+                        "shift_id": 1,
+                        "shift_date": "2026-03-02",
+                        "machine_code": "FILLING-MACHINE-001",
+                        "created_at": "2026-02-17 15:07:17"
+                    }
+                }
+            },
+            "shiftCreateResponse400": {
+                "value": {
+                    "success": false,
+                    "message": "The user id field is required.",
+                    "errors": {
+                        "user_id": "error.required",
+                        "shift_id": "error.required",
+                        "shift_date": "error.required",
+                        "machine_code": "error.required"
+                    }
+                }
+            },
+            "shiftDetailResponse200": {
+                "value": {
+                    "success": true,
+                    "message": "Successful",
+                    "data": {
+                        "id": 23,
+                        "shift_date": "2026-03-02",
+                        "machine_code": "FILLING-MACHINE-001",
+                        "shift": {
+                            "id": 1,
+                            "name": "Shift Pagi",
+                            "day_of_week": 1,
+                            "start_time": "07:00:00",
+                            "end_time": "15:00:00"
+                        },
+                        "user": {
+                            "id": 1,
+                            "employee_number": "000001",
+                            "name": "Dummy Employee"
+                        },
+                        "created_at": "2026-02-17 22:07:17",
+                        "updated_at": "2026-02-17 22:07:17"
+                    }
+                }
+            },
+            "shiftDetailResponse400": {
+                "value": {
+                    "success": false,
+                    "message": "The id field must be an integer.",
+                    "errors": {
+                        "id": "error.integer"
+                    }
+                }
+            },
+            "shiftDetailResponse404": {
+                "value": {
+                    "success": false,
+                    "message": "Shift not found",
+                    "errors": {
+                        "shift": "error.not_found"
+                    }
+                }
+            },
+            "shiftUpdateRequest": {
+                "value": {
+                    "user_id": 1,
+                    "shift_id": 1,
+                    "shift_date": "2026-03-02",
+                    "machine_code": "FILLING-MACHINE-001"
+                }
+            },
+            "shiftUpdateResponse200": {
+                "value": {
+                    "success": true,
+                    "message": "Successful",
+                    "data": {
+                        "id": 23,
+                        "user_id": 1,
+                        "shift_id": 1,
+                        "shift_date": "2026-03-02",
+                        "machine_code": "FILLING-MACHINE-001",
+                        "updated_at": "2026-02-17 22:39:04"
+                    }
+                }
+            },
+            "shiftUpdateResponse400": {
+                "value": {
+                    "success": false,
+                    "message": "The selected user id is invalid.",
+                    "errors": {
+                        "user_id": "error.not_found",
+                        "shift_id": "error.not_found",
+                        "shift_date": "error.invalid_date"
+                    }
+                }
+            },
+            "shiftUpdateResponse404": {
+                "value": {
+                    "success": false,
+                    "message": "Shift not found",
+                    "errors": {
+                        "shift": "error.not_found"
+                    }
+                }
+            },
+            "shiftDeleteResponse200": {
+                "value": {
+                    "success": true,
+                    "message": "Successful",
+                    "data": []
+                }
+            },
+            "shiftDeleteResponse400": {
+                "value": {
+                    "success": false,
+                    "message": "The id field must be an integer.",
+                    "errors": {
+                        "id": "error.invalid"
+                    }
+                }
+            },
+            "shiftDeleteResponse404": {
+                "value": {
+                    "success": false,
+                    "message": "Shift not found",
+                    "errors": {
+                        "shift": "error.not_found"
                     }
                 }
             }
