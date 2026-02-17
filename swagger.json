@@ -27,6 +27,10 @@
         {
             "name": "Backoffice - Shift",
             "description": "API Manage Shift"
+        },
+        {
+            "name": "Machine - Auth",
+            "description": "API Authentication"
         }
     ],
     "paths": {
@@ -1103,6 +1107,128 @@
                     }
                 }
             }
+        },
+        "/machine/v1/auth/login": {
+            "post": {
+                "tags": ["Machine - Auth"],
+                "description": "Login machine with authenticated user",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/loginMachineRequest"
+                            },
+                            "examples": {
+                                "request": {
+                                    "$ref": "#/components/examples/loginMachineRequest"
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Success response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/loginMachineResponse"
+                                },
+                                "examples": {
+                                    "response": {
+                                        "$ref": "#/components/examples/loginMachineResponse200"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/defaultErrorResponse"
+                                },
+                                "examples": {
+                                    "response": {
+                                        "$ref": "#/components/examples/loginMachineResponse400"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/defaultErrorResponse"
+                                },
+                                "examples": {
+                                    "response": {
+                                        "$ref": "#/components/examples/loginMachineResponse401"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/machine/v1/auth/logout": {
+            "post": {
+                "tags": ["Machine - Auth"],
+                "description": "Logout authenticated machine user",
+                "security": [
+                    { "bearerAuth": [] }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/logoutMachineRequest"
+                            },
+                            "examples": {
+                                "request": {
+                                    "$ref": "#/components/examples/logoutMachineRequest"
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Success response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/logoutMachineResponse"
+                                },
+                                "examples": {
+                                    "response": {
+                                        "$ref": "#/components/examples/logoutMachineResponse200"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/defaultErrorResponse"
+                                },
+                                "examples": {
+                                    "response": {
+                                        "$ref": "#/components/examples/defaultResponse401"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
         }
     },
     "components": {
@@ -1244,7 +1370,10 @@
                             "token": {
                                 "type": "string"
                             },
-                            "Backoffice - User": {
+                            "token_type": {
+                                "type": "string"
+                            },
+                            "user": {
                                 "type": "object",
                                 "properties": {
                                     "id": {
@@ -1263,7 +1392,7 @@
                                 "required": ["id", "employee_number", "name"]
                             }
                         },
-                        "required": ["token", "Backoffice - User"]
+                        "required": ["token", "user"]
                     }
                 },
                 "required": ["success", "message"]
@@ -1660,7 +1789,7 @@
                                         "end_time": {
                                             "type": "string"
                                         },
-                                        "Backoffice - User": {
+                                        "user": {
                                             "type": "object",
                                             "properties": {
                                                 "id": {
@@ -1676,7 +1805,7 @@
                                             "required": ["id", "employee_number", "name"]
                                         }
                                     },
-                                    "required": ["shift_date", "shift_name", "day_of_week", "start_time", "end_time", "Backoffice - User"]
+                                    "required": ["shift_date", "shift_name", "day_of_week", "start_time", "end_time", "user"]
                                 }
                             }
                         },
@@ -1753,7 +1882,7 @@
                                     },
                                     "required": ["id", "name", "day_of_week", "start_time", "end_time"]
                                 },
-                                "Backoffice - User": {
+                                "user": {
                                     "type": "object",
                                     "properties": {
                                         "id": {
@@ -1777,7 +1906,7 @@
                                     "format": "date-time"
                                 }
                             },
-                            "required": ["id", "shift_date", "machine_code", "Backoffice - Shift", "Backoffice - User", "created_at", "updated_at"]
+                            "required": ["id", "shift_date", "machine_code", "Backoffice - Shift", "user", "created_at", "updated_at"]
                         }
                     },
                     "meta": {
@@ -1897,7 +2026,7 @@
                         },
                         "required": ["id", "name", "day_of_week", "start_time", "end_time"]
                     },
-                    "Backoffice - User": {
+                    "user": {
                         "type": "object",
                         "properties": {
                             "id": {
@@ -1921,7 +2050,7 @@
                         "format": "date-time"
                     }
                 },
-                "required": ["id", "shift_date", "machine_code", "Backoffice - Shift", "Backoffice - User", "created_at", "updated_at"]
+                "required": ["id", "shift_date", "machine_code", "Backoffice - Shift", "user", "created_at", "updated_at"]
             },
             "shiftUpdateRequest": {
                 "type": "object",
@@ -1994,6 +2123,83 @@
                     }
                 },
                 "required": ["success", "message", "data"]
+            },
+            "loginMachineRequest": {
+                "type": "object",
+                "properties": {
+                    "employee_number": {
+                        "type": "string",
+                        "minLength": 6,
+                        "maxLength": 6
+                    },
+                    "machine_code": {
+                        "type": "string"
+                    }
+                },
+                "required": ["employee_number", "machine_code"]
+            },
+            "loginMachineResponse": {
+                "type": "object",
+                "properties": {
+                    "success": {
+                        "type": "boolean"
+                    },
+                    "message": {
+                        "type": "string"
+                    },
+                    "data": {
+                        "type": "object",
+                        "properties": {
+                            "token": {
+                                "type": "string"
+                            },
+                            "token_type": {
+                                "type": "string"
+                            },
+                            "user": {
+                                "type": "object",
+                                "properties": {
+                                    "id": {
+                                        "type": "integer"
+                                    },
+                                    "employee_number": {
+                                        "type": "string"
+                                    },
+                                    "name": {
+                                        "type": "string"
+                                    },
+                                    "email": {
+                                        "type": "string"
+                                    }
+                                },
+                                "required": ["id", "employee_number", "name"]
+                            },
+                            "machine_code": {
+                                "type": "string"
+                            }
+                        },
+                        "required": ["token", "token_type", "user", "machine_code"]
+                    }
+                },
+                "required": ["success", "message"]
+            },
+            "logoutMachineRequest": {
+                "type": "object"
+            },
+            "logoutMachineResponse": {
+                "type": "object",
+                "properties": {
+                    "success": {
+                        "type": "boolean"
+                    },
+                    "message": {
+                        "type": "string"
+                    },
+                    "data": {
+                        "type": "object"
+                    }
+                },
+                "required": ["success", "message"]
             }
         },
         "examples": {
@@ -2018,7 +2224,8 @@
                     "message": "Successfull",
                     "data": {
                         "token": "5|NN1DfWX9K0eEnfGPzxRkGacmXS1GKnIu08rUBLJZ69407e59",
-                        "Backoffice - User": {
+                        "token_type": "Bearer",
+                        "user": {
                             "id": 1,
                             "employee_number": "000001",
                             "name": "Dummy Employee",
@@ -2159,7 +2366,7 @@
                     "success": false,
                     "message": "User not found",
                     "errors": {
-                        "Backoffice - User": "error.not_found"
+                        "user": "error.not_found"
                     }
                 }
             },
@@ -2184,7 +2391,7 @@
                     "success": false,
                     "message": "User not found",
                     "errors": {
-                        "Backoffice - User": "error.not_found"
+                        "user": "error.not_found"
                     }
                 }
             },
@@ -2218,7 +2425,7 @@
                     "success": false,
                     "message": "User not found or not deleted",
                     "errors": {
-                        "Backoffice - User": "error.not_found"
+                        "user": "error.not_found"
                     }
                 }
             },
@@ -2250,7 +2457,7 @@
                     "success": false,
                     "message": "User not found",
                     "errors": {
-                        "Backoffice - User": "error.not_found"
+                        "user": "error.not_found"
                     }
                 }
             },
@@ -2300,7 +2507,7 @@
                                 "day_of_week": 5,
                                 "start_time": "23:00:00",
                                 "end_time": "07:00:00",
-                                "Backoffice - User": {
+                                "user": {
                                     "id": 1,
                                     "employee_number": "000001",
                                     "name": "Dummy Employee"
@@ -2312,7 +2519,7 @@
                                 "day_of_week": 4,
                                 "start_time": "15:00:00",
                                 "end_time": "23:00:00",
-                                "Backoffice - User": {
+                                "user": {
                                     "id": 1,
                                     "employee_number": "000001",
                                     "name": "Dummy Employee"
@@ -2365,7 +2572,7 @@
                                 "start_time": "23:00:00",
                                 "end_time": "07:00:00"
                             },
-                            "Backoffice - User": {
+                            "user": {
                                 "id": 1,
                                 "employee_number": "000001",
                                 "name": "Dummy Employee"
@@ -2384,7 +2591,7 @@
                                 "start_time": "15:00:00",
                                 "end_time": "23:00:00"
                             },
-                            "Backoffice - User": {
+                            "user": {
                                 "id": 1,
                                 "employee_number": "000001",
                                 "name": "Dummy Employee"
@@ -2466,7 +2673,7 @@
                             "start_time": "07:00:00",
                             "end_time": "15:00:00"
                         },
-                        "Backoffice - User": {
+                        "user": {
                             "id": 1,
                             "employee_number": "000001",
                             "name": "Dummy Employee"
@@ -2559,6 +2766,66 @@
                     "errors": {
                         "Backoffice - Shift": "error.not_found"
                     }
+                }
+            },
+            "loginMachineRequest": {
+                "value": {
+                    "employee_number": "000001",
+                    "machine_code": "FILLING-MACHINE-001"
+                }
+            },
+            "loginMachineResponse200": {
+                "value": {
+                    "success": true,
+                    "message": "Successful",
+                    "data": {
+                        "token": "21|3Ukbg06XdY4ie0AMt61udhbir3OVmnclvuE5QXjFdfad1143",
+                        "token_type": "Bearer",
+                        "user": {
+                            "id": 1,
+                            "employee_number": "000001",
+                            "name": "Dummy Employee"
+                        },
+                        "machine_code": "FILLING-MACHINE-001"
+                    }
+                }
+            },
+            "loginMachineResponse400": {
+                "value": {
+                    "success": false,
+                    "message": "The employee number field is required.",
+                    "errors": {
+                        "employee_number": "error.required",
+                        "machine_code": "error.required"
+                    }
+                }
+            },
+            "loginMachineResponse401": {
+                "value": {
+                    "success": false,
+                    "message": "Invalid employee number",
+                    "errors": {
+                        "employee_number": "error.invalid_credential"
+                    }
+                }
+            },
+            "loginMachineResponse403": {
+                "value": {
+                    "success": false,
+                    "message": "login gagal pada 18-02-2026 00:12:03, karena tidak memiliki shift.",
+                    "errors": {
+                        "auth": "error.unauthorized"
+                    }
+                }
+            },
+            "logoutMachineRequest": {
+                "value": {}
+            },
+            "logoutMachineResponse200": {
+                "value": {
+                    "success": true,
+                    "message": "Successfull",
+                    "data": []
                 }
             }
         }
