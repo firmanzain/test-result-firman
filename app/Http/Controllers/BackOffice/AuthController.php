@@ -48,6 +48,7 @@ class AuthController extends Controller
         return ApiResponse::success(
             [
                 'token' => $auth->token,
+                'token_type' => 'Bearer',
                 'user' => [
                     'id' => $user->id,
                     'employee_number' => $user->employee_number,
@@ -55,7 +56,7 @@ class AuthController extends Controller
                     'email' => $user->email,
                 ],
             ],
-            'Successfull'
+            'Successful'
         );
     }
 
@@ -66,7 +67,7 @@ class AuthController extends Controller
 
         return ApiResponse::success(
             null,
-            'Successfull'
+            'Successful'
         );
     }
 }
