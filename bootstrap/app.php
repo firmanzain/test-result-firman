@@ -1,5 +1,6 @@
 <?php
 
+use App\Exceptions\BusinessRuleException;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
@@ -48,5 +49,15 @@ return Application::configure(basePath: dirname(__DIR__))
                     404
                 );
             }
+        });
+
+        $exceptions->render(function (BusinessRuleException $e, Request $request) {
+            return ApiResponse::error(
+                $e->getMessage(),
+                [
+                    $e->field => $e->errorCode,
+                ],
+                400
+            );
         });
     })->create();
