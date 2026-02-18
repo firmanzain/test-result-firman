@@ -29,6 +29,10 @@
             "description": "API Manage Shift"
         },
         {
+            "name": "Backoffice - Report",
+            "description": "API For Reporting"
+        },
+        {
             "name": "Machine - Auth",
             "description": "API Authentication"
         },
@@ -1408,6 +1412,70 @@
                     }
                 }
             }
+        },
+        "/backoffice/v1/report/user-machine-activity": {
+            "get": {
+                "tags": ["Backoffice - Report"],
+                "description": "Get list report user machine activity with pagination",
+                "security": [
+                    { "bearerAuth": [] }
+                ],
+                "parameters": [
+                    { "$ref": "#/components/parameters/pageParam" },
+                    { "$ref": "#/components/parameters/limitParam" },
+                    { "$ref": "#/components/parameters/machineCodeParam" },
+                    { "$ref": "#/components/parameters/employeeNumberParam" },
+                    { "$ref": "#/components/parameters/startDateParam" },
+                    { "$ref": "#/components/parameters/endDateParam" }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/reportUserMachineActivityListResponse"
+                                },
+                                "examples": {
+                                    "response": {
+                                        "$ref": "#/components/examples/reportUserMachineActivityListResponse200"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/defaultErrorResponse"
+                                },
+                                "examples": {
+                                    "response": {
+                                        "$ref": "#/components/examples/reportUserMachineActivityListResponse400"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/defaultErrorResponse"
+                                },
+                                "examples": {
+                                    "response": {
+                                        "$ref": "#/components/examples/defaultResponse401"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
         }
     },
     "components": {
@@ -2546,6 +2614,67 @@
                     }
                 },
                 "required": ["success", "message", "data"]
+            },
+            "reportUserMachineActivityListResponse": {
+                "type": "object",
+                "properties": {
+                    "success": {
+                        "type": "boolean"
+                    },
+                    "message": {
+                        "type": "string"
+                    },
+                    "data": {
+                        "type": "array",
+                        "items": {
+                            "type": "object",
+                            "properties": {
+                                "id": {
+                                    "type": "integer"
+                                },
+                                "machine_code": {
+                                    "type": "string"
+                                },
+                                "event": {
+                                    "type": "string",
+                                    "enum": ["login_success", "login_failed", "logout", "process_start", "process_stop", "error"]
+                                },
+                                "log_message": {
+                                    "type": "string"
+                                },
+                                "created_at": {
+                                    "type": "string",
+                                    "format": "date-time"
+                                }
+                            },
+                            "required": ["id", "event", "machine_code", "log_message", "user", "created_at"]
+                        }
+                    },
+                    "meta": {
+                        "type": "object",
+                        "properties": {
+                            "current_page": {
+                                "type": "integer"
+                            },
+                            "per_page": {
+                                "type": "integer"
+                            },
+                            "total": {
+                                "type": "integer"
+                            },
+                            "last_page": {
+                                "type": "integer"
+                            },
+                            "from": {
+                                "type": "integer"
+                            },
+                            "to": {
+                                "type": "integer"
+                            }
+                        }
+                    }
+                },
+                "required": ["success", "message", "data", "meta"]
             }
         },
         "examples": {
@@ -3260,6 +3389,57 @@
                     "errors": {
                         "event": "error.required",
                         "message": "error.required"
+                    }
+                }
+            },
+            "reportUserMachineActivityListResponse200": {
+                "value": {
+                    "success": true,
+                    "message": "Successful",
+                    "data": [
+                        {
+                            "id": 31,
+                            "machine_code": "FILLING-MACHINE-001",
+                            "event": "process_start",
+                            "log_message": "Proses filling dimulai",
+                            "user": {
+                                "employee_number": "000001",
+                                "name": "Dummy Employee"
+                            },
+                            "created_at": "2026-02-18 09:58:20"
+                        },
+                        {
+                            "id": 30,
+                            "machine_code": "FILLING-MACHINE-001",
+                            "event": "process_start",
+                            "log_message": "Proses filling dimulai",
+                            "user": {
+                                "employee_number": "000001",
+                                "name": "Dummy Employee"
+                            },
+                            "created_at": "2026-02-18 09:48:41"
+                        }
+                    ],
+                    "meta": {
+                        "start_date": "2026-02-01",
+                        "end_date": "2026-02-28",
+                        "current_page": 1,
+                        "per_page": 2,
+                        "total": 29,
+                        "last_page": 15
+                    }
+                }
+            },
+            "reportUserMachineActivityListResponse400": {
+                "value": {
+                    "success": false,
+                    "message": "The start date field must be a valid date.",
+                    "errors": {
+                        "start_date": "error.invalid_date",
+                        "end_date": "error.invalid_date",
+                        "machine_code": "error.invalid",
+                        "page": "error.integer",
+                        "limit": "error.integer"
                     }
                 }
             }
