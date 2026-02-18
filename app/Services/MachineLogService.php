@@ -19,4 +19,18 @@ class MachineLogService
             'log_message' => $dto->logMessage,
         ]);
     }
+
+    public static function createManual(
+        User $user,
+        string $machineCode,
+        string $event,
+        string $message
+    ): MachineLog {
+        return MachineLog::create([
+            'user_id' => $user->id,
+            'machine_code' => $machineCode,
+            'event' => $event,
+            'log_message' => $message,
+        ]);
+    }
 }
