@@ -16,4 +16,9 @@ class MachineLog extends Model
         'event',
         'log_message',
     ];
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
 }
