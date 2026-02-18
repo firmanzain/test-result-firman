@@ -35,6 +35,10 @@
         {
             "name": "Machine - Profile",
             "description": "API Get Profile"
+        },
+        {
+            "name": "Machine - Log Entry",
+            "description": "API Manage Log Entry"
         }
     ],
     "paths": {
@@ -1274,6 +1278,136 @@
                     }
                 }
             }
+        },
+        "/machine/v1/log-entry": {
+            "get": {
+                "tags": ["Machine - Log Entry"],
+                "description": "Get list log entry machine with pagination",
+                "security": [
+                    { "bearerAuth": [] }
+                ],
+                "parameters": [
+                    { "$ref": "#/components/parameters/pageParam" },
+                    { "$ref": "#/components/parameters/limitParam" },
+                    { "$ref": "#/components/parameters/startDateParam" },
+                    { "$ref": "#/components/parameters/endDateParam" }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/logEntryMachineListResponse"
+                                },
+                                "examples": {
+                                    "response": {
+                                        "$ref": "#/components/examples/logEntryMachineListResponse200"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/defaultErrorResponse"
+                                },
+                                "examples": {
+                                    "response": {
+                                        "$ref": "#/components/examples/logEntryMachineListResponse400"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/defaultErrorResponse"
+                                },
+                                "examples": {
+                                    "response": {
+                                        "$ref": "#/components/examples/defaultResponse401"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "tags": ["Machine - Log Entry"],
+                "description": "Create log entry machine",
+                "security": [
+                    { "bearerAuth": [] }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/logEntryMachineCreateRequest"
+                            },
+                            "examples": {
+                                "request": {
+                                    "$ref": "#/components/examples/logEntryMachineCreateRequest"
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Success response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/logEntryMachineCreateResponse"
+                                },
+                                "examples": {
+                                    "response": {
+                                        "$ref": "#/components/examples/logEntryMachineCreateResponse200"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/defaultErrorResponse"
+                                },
+                                "examples": {
+                                    "response": {
+                                        "$ref": "#/components/examples/logEntryMachineCreateResponse400"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/defaultErrorResponse"
+                                },
+                                "examples": {
+                                    "response": {
+                                        "$ref": "#/components/examples/defaultResponse401"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
         }
     },
     "components": {
@@ -2309,6 +2443,109 @@
                     }
                 },
                 "required": ["success", "message", "data"]
+            },
+            "logEntryMachineListResponse": {
+                "type": "object",
+                "properties": {
+                    "success": {
+                        "type": "boolean"
+                    },
+                    "message": {
+                        "type": "string"
+                    },
+                    "data": {
+                        "type": "array",
+                        "items": {
+                            "type": "object",
+                            "properties": {
+                                "id": {
+                                    "type": "integer"
+                                },
+                                "event": {
+                                    "type": "string",
+                                    "enum": ["login_success", "login_failed", "logout", "process_start", "process_stop", "error"]
+                                },
+                                "message": {
+                                    "type": "string"
+                                },
+                                "created_at": {
+                                    "type": "string",
+                                    "format": "date-time"
+                                }
+                            },
+                            "required": ["id", "event", "message", "created_at"]
+                        }
+                    },
+                    "meta": {
+                        "type": "object",
+                        "properties": {
+                            "current_page": {
+                                "type": "integer"
+                            },
+                            "per_page": {
+                                "type": "integer"
+                            },
+                            "total": {
+                                "type": "integer"
+                            },
+                            "last_page": {
+                                "type": "integer"
+                            },
+                            "from": {
+                                "type": "integer"
+                            },
+                            "to": {
+                                "type": "integer"
+                            }
+                        }
+                    }
+                },
+                "required": ["success", "message", "data", "meta"]
+            },
+            "logEntryMachineCreateRequest": {
+                "type": "object",
+                "properties": {
+                    "event": {
+                        "type": "string",
+                        "enum": ["login_success", "login_failed", "logout", "process_start", "process_stop", "error"]
+                    },
+                    "message": {
+                        "type": "string"
+                    }
+                },
+                "required": ["event", "message"]
+            },
+            "logEntryMachineCreateResponse": {
+                "type": "object",
+                "properties": {
+                    "success": {
+                        "type": "boolean"
+                    },
+                    "message": {
+                        "type": "string"
+                    },
+                    "data": {
+                        "type": "object",
+                        "properties": {
+                            "id": {
+                                "type": "integer"
+                            },
+                            "event": {
+                                "type": "string",
+                                "enum": ["login_success", "login_failed", "logout", "process_start", "process_stop", "error"]
+                            },
+                            "message": {
+                                "type": "string"
+                            },
+                            "created_at": {
+                                "type": "string",
+                                "format": "date-time"
+                            }
+                        },
+                        "required": ["id", "event", "message", "created_at"]
+                    }
+                },
+                "required": ["success", "message", "data"]
             }
         },
         "examples": {
@@ -2317,7 +2554,7 @@
                     "success": false,
                     "message": "Unauthenticated",
                     "errors": {
-                        "Backoffice - Auth": "error.unauthenticated"
+                        "auth": "error.unauthenticated"
                     }
                 }
             },
@@ -2957,6 +3194,72 @@
                             "end_time": "07:00:00",
                             "is_active": true
                         }
+                    }
+                }
+            },
+            "logEntryMachineListResponse200": {
+                "value": {
+                    "success": true,
+                    "message": "Successful",
+                    "data": [
+                        {
+                            "id": 29,
+                            "event": "login_success",
+                            "message": "Login successful",
+                            "created_at": "2026-02-18 08:18:14"
+                        },
+                        {
+                            "id": 27,
+                            "event": "login_failed",
+                            "message": "Login failed: login gagal pada 18-02-2026 08:17:43, di luar jam kerja shift. Shift mulai pukul 23:00:00 sampai 07:00:00.",
+                            "created_at": "2026-02-18 08:17:44"
+                        }
+                    ],
+                    "meta": {
+                        "current_page": 1,
+                        "per_page": 2,
+                        "total": 28,
+                        "last_page": 14,
+                        "from": 1,
+                        "to": 2
+                    }
+                }
+            },
+            "logEntryMachineListResponse400": {
+                "value": {
+                    "success": false,
+                    "message": "The page field must be an integer.",
+                    "errors": {
+                        "page": "error.integer",
+                        "limit": "error.max"
+                    }
+                }
+            },
+            "logEntryMachineCreateRequest": {
+                "value": {
+                    "event": "process_start",
+                    "message": "Proses filling dimulai"
+                }
+            },
+            "logEntryMachineCreateResponse200": {
+                "value": {
+                    "success": true,
+                    "message": "Successful",
+                    "data": {
+                        "id": 31,
+                        "event": "process_start",
+                        "message": "Proses filling dimulai",
+                        "created_at": "2026-02-18 09:58:20"
+                    }
+                }
+            },
+            "logEntryMachineCreateResponse400": {
+                "value": {
+                    "success": false,
+                    "message": "The event field is required.",
+                    "errors": {
+                        "event": "error.required",
+                        "message": "error.required"
                     }
                 }
             }
